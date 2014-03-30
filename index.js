@@ -52,6 +52,7 @@ function Atman(config) {
       app.public(req, res, function() { res.send(401); });
     });
     app.use(app.router);
+    app.use(function (req, res, next) { res.send(404); });
   });
 
   app.public.configure(function () {
