@@ -21,7 +21,7 @@ module.exports = exports = function login(config) {
     passport.use('atman', config.strategy || new Strategy(config.test));
 
     app.post('/auth/login', function (req, res, next) {
-      res.redirect('/');
+      res.redirect(app.resolve('/'));
     });
 
     app.public.post('/auth/login', function (req, res, next) {
