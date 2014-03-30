@@ -1,0 +1,33 @@
+@import (less) "includes/fa/font-awesome.css";
+@import "includes/bootstrap.less";
+@import "components/login-form.less";
+
+body { overflow-y: scroll; }
+a { cursor: pointer; }
+
+.nav-subnav {
+  transition: max-height 200ms, padding 200ms;
+  list-style: none;
+  padding: 12px;
+  overflow: hidden;
+  li.active > & { max-height: 400px; }
+  li:not(.active) > & {
+    max-height: 0;
+    padding: 0 12px;
+  }
+}
+
+
+.sortable {
+  position: relative;
+  cursor: pointer;
+  &:after {
+    color: #AAA;
+    &:extend(.fa, .fa-sort:before);
+    position: relative;
+    float: right;
+    top: 3px;
+  }
+  &.sorting-desc:after { &:extend(.fa-sort-desc:before); }
+  &.sorting-asc:after { &:extend(.fa-sort-asc:before); }
+}

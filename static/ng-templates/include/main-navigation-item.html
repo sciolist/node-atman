@@ -1,0 +1,17 @@
+<a ng-hide="nav.actions" ng-click="navigate(nav)" href="{{nav.href}}">
+  <i class="fa fa-home"></i>
+  <span class="nav-text">{{nav.name}}</span>
+</a>
+
+<a ng-show="nav.actions" ng-click="nav.toggle()">
+  <i class="fa fa-home"></i>
+  <span class="nav-text">{{nav.name}}</span>
+  <span class="badger pull-right"><i class="fa fa-caret-down"></i></span>
+</a>
+
+<ul class="nav-subnav">
+  <li ng-repeat="action in nav.actions">
+    <a ng-click="navigate(action)" href="{{action.href}}">{{action.name}}</a>
+  </li>
+</ul>
+

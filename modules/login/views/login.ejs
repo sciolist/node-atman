@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= config.title %> - Login</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+  </head>
+  <body>
+    <form action="./auth/login" method="post" class="container login-container">
+      <h1><%= config.title %></h1>
+      <% if(failed) { %>
+        <div class="alert alert-danger">
+          <%= failed %>
+        </div>
+      <% } %>
+      <div class="form-group">
+        <input type="text" id="username" name="username" class="form-control" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control text" name="password" placeholder="Password">
+      </div>
+      <input type="submit" class="col-xs-12 btn btn-primary" value="Log in">
+    </form>
+
+    <script>document.getElementById('username').focus()</script>
+  </body>
+</html>
+

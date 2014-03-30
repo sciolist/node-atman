@@ -1,0 +1,24 @@
+{
+  "name": "atman",
+  "version": "0.0.1",
+  "scripts": {
+    "install": "bower install"
+  },
+  "devDependencies": {
+    "tiny-lr": "0.0.5",
+    "gulp-livereload": "~1.1.1",
+    "gulp": "~3.5.2",
+    "gulp-less": "~1.2.1",
+    "gulp-browserify": "~0.4.6",
+    "gulp-concat": "~2.1.7"
+  },
+  "dependencies": {
+    "passport-local": "~0.1.6",
+    "bower": "~1.2.8",
+    "express": "~3.4.8",
+    "passport": "~0.2.0",
+    "connect": "~2.13.0",
+    "ejs": "~0.8.5",
+    "browserify": "~3.32.0"
+  }
+}

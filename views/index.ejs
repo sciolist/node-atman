@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title ng-bind="config.title"></title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <script>window.state = <%- JSON.stringify({ config: config, user: user }) %></script>
+    <script src="./bower_components/underscore/underscore.js"></script>
+    <script src="./bower_components/moment/min/moment-with-langs.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="./bower_components/angular-resource/angular-resource.js"></script>
+    <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <% head.forEach(function (h) { %><%- h %><% }); %>
+    <script src="./js/index.js"></script>
+    <% required.forEach(function (r) { %>
+      <script src="<%= r %>"></script>
+    <% }) %>
+  </head>
+  <body ng-app="atman">
+    <div class="container-fluid">
+      
+      <nav id="left-panel" class="navbar navbar-default navbar-admin" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">{{config.title}}</a>
+          </div>
+          <div class="container-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <span>{{user.email}}</span>
+                  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="./auth/logout">Log out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="row">
+        <div class="col-md-2 adm-sidebar" ng-controller="sidebar">
+          <nav class="nav nav-pills nav-stacked nav-admin">
+            <li ng-class="nav.classes" class="{{nav.active?'active':''}}" ng-include="nav.template" ng-repeat="nav in navigation"></li>
+          </nav>
+        </div>
+        <div class="adm-main-view col-md-10">
+          <alert ng-repeat="alert in alerts | limitTo:3" type="alert.type" close="closeAlert(alert)">
+            <div ng-bind-html="alert.message"></div>
+          </alert>
+          <div ng-view></div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
