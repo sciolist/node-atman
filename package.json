@@ -17,7 +17,7 @@
     "bower": "~1.2.8",
     "express": "~3.4.8",
     "passport": "~0.2.0",
-    "connect": "~2.13.0",
+    "connect": "^2.13.1",
     "ejs": "~0.8.5",
     "browserify": "~3.32.0"
   }
