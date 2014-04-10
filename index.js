@@ -1,5 +1,6 @@
 var express = require('express');
 var connect = require('connect');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = exports = Atman;
 exports.login = require('./modules/login');
@@ -9,14 +10,15 @@ function Atman(config) {
   if(!config.title) config.title = 'Administration';
 
   var passport = new (require('passport').Authenticator)();
-  function atman(req, res, next) { app(req, res, next); }
-  atman.config = config;
-  atman.modules = [];
-  atman.use = function (module) {
-    module(this, module);
-  }
+  var atman = new EventEmitter();
+  var app = express();
 
-  var app = atman.modules['admin'] = express();
+  atman.on('mount', function (a) { this.parent = a; });
+  atman.config = config;
+  atman.url = app.url;
+  atman.handle = app.handle.bind(app);
+  atman.use = function (fn) { fn(this); }
+
   atman.app = app;
   app.public = express();
   app.public.parent = app;
