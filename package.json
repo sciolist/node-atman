@@ -15,10 +15,14 @@
   "dependencies": {
     "passport-local": "~0.1.6",
     "bower": "~1.2.8",
-    "express": "~3.4.8",
+    "express": "~4.0.0",
     "passport": "~0.2.0",
     "connect": "^2.13.1",
     "ejs": "~0.8.5",
-    "browserify": "~3.32.0"
+    "browserify": "~3.32.0",
+    "cookie-parser": "^1.0.1",
+    "express-session": "^1.0.2",
+    "serve-static": "^1.0.4",
+    "body-parser": "^1.0.1"
   }
 }

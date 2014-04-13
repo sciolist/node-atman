@@ -13,7 +13,7 @@ module.exports = exports = function login(config) {
   return loginModule;
 
   function loginModule(atman) {
-    var app = atman.app;
+    var app = atman;
     var passport = app.get('passport');
     var Strategy = require('passport-local').Strategy;
     passport.serializeUser(config.serializeUser);

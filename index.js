@@ -1,6 +1,7 @@
 var express = require('express');
 var connect = require('connect');
 var EventEmitter = require('events').EventEmitter;
+var cookieParser = require('cookie-parser');
 
 module.exports = exports = Atman;
 exports.login = require('./modules/login');
@@ -8,58 +9,41 @@ exports.login = require('./modules/login');
 function Atman(config) {
   if(!config) config = {};
   if(!config.title) config.title = 'Administration';
+  if(!config.sessionSecret) throw new Error('missing sessionSecret');
 
   var passport = new (require('passport').Authenticator)();
-  var atman = new EventEmitter();
   var app = express();
+  app.register = function (fn) { fn(app); }
 
-  atman.on('mount', function (a) { this.parent = a; });
-  atman.config = config;
-  atman.url = app.url;
-  atman.handle = app.handle.bind(app);
-  atman.use = function (fn) { fn(this); }
+  app.public = new express.Router();
 
-  atman.app = app;
-  app.public = express();
-  app.public.parent = app;
-
-  var static = connect();
+  var static = express.Router();
   app.static = function(path) {
-    static.use(connect.static(path));
+    static.use(require('serve-static')(path));
   }
 
-  function shared(app) {
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'ejs');
-    app.set('passport', passport);
-    app.set('title', config.title);
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.set('passport', passport);
+  app.set('title', config.title);
+  app.use(static);
 
-    app.resolve = app.locals.resolve = function (path) {
-      return (app.path()||'/') + (path||'').replace(/^\//, '');
-    }
-
-    app.use(express.cookieParser());
-    app.use(express.json());
-    app.use(express.urlencoded());
-    app.use(express.cookieSession({ key: 'rwa-session', secret: config.sessionSecret }));
-    app.use(passport.initialize());
-    app.use(passport.session());
+  app.resolve = app.locals.resolve = function (path) {
+    return (app.path()||'/') + (path||'').replace(/^\//, '');
   }
 
-  app.configure(function () {
-    app.use(static);
-    shared(app);
-    app.use(function (req, res, next) {
-      if(req.isAuthenticated()) return next();
-      app.public(req, res, function() { res.send(401); });
-    });
-    app.use(app.router);
-    app.use(function (req, res, next) { res.send(404); });
-  });
+  app.use(require('cookie-parser')());
+  app.use(require('body-parser')());
+  app.use(require('express-session')({
+    key: 'rwa-session',
+    secret: config.sessionSecret
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-  app.public.configure(function () {
-    shared(app.public);
-    app.public.use(app.public.router);
+  app.use(function (req, res, next) {
+    if(req.isAuthenticated()) return next();
+    app.public(req, res, function() { res.send(401); });
   });
 
   app.static(__dirname + '/static');
@@ -78,6 +62,6 @@ function Atman(config) {
     res.render('index', locals);
   });
 
-  return atman;
+  return app;
 }
 
