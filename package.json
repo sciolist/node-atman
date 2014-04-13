@@ -1,6 +1,6 @@
 {
   "name": "atman",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "scripts": {
     "prepublish": "bower install"
   },
